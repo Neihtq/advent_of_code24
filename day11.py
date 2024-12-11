@@ -1,10 +1,12 @@
+from collections import defaultdict, Counter
 from utils.time_utils import execute
 from utils.day11.get_input_utils import get_input
 
 
-def blink(stones, cache):
+def blink(cache, stone_count):
     new_stones = []
-    for stone in stones:
+    new_count = defaultdict(int)
+    for stone, count in stone_count.items():
         if stone not in cache:
             if stone == '0':
                 cache[stone] = ['1']
@@ -16,36 +18,36 @@ def blink(stones, cache):
             else:
                 cache[stone] = [str(int(stone) * 2024)]
 
-        new_stones.extend(cache[stone]) 
-        
+
+        for new_stone in cache[stone]:
+            new_count[new_stone] += count
+            new_stones.append(new_stone)
     
-    return new_stones
+    return new_count
+
+
+def simulate_blinking(stones, num_blinks):
+    cache = {}
+    stone_count = Counter(stones)
+    for _ in range(num_blinks):
+        new_count = blink(cache, stone_count) 
+        stone_count = new_count
+
+    num_stones = sum(stone_count.values())
+    print(f"Number of stones after {num_blinks} blinks", num_stones)
 
 
 def part1(stones):
-    num_blinks = 10
-    new_stones = stones
-    cache = {}
-    for _ in range(num_blinks):
-        new_stones = blink(new_stones, cache) 
-
-    print(f"Number of stones after {num_blinks} blinks", len(new_stones))
+    simulate_blinking(stones, 25)
 
 
 def part2(stones):
-    num_blinks = 75
-    new_stones = stones
-    cache = {}
-    for i in range(num_blinks):
-        print('blink', i)
-        new_stones = blink(new_stones, cache) 
-
-    print(f"Number of stones after {num_blinks} blinks", len(new_stones))
+    simulate_blinking(stones, 75)
 
 
 def main():
     stones = get_input()
-    # stones = ['125', '17']
+    execute([part1], stones)
     execute([part1, part2], stones)
 
 
