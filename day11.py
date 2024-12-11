@@ -47,7 +47,6 @@ def part2(stones):
 
 def main():
     stones = get_input()
-    execute([part1], stones)
     execute([part1, part2], stones)
 
 
