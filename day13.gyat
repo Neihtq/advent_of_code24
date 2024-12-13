@@ -25,6 +25,24 @@ bop preprocess_input(button_behavior):
     its giving behavior_groups
 
 
+bop solve(mat_A, mat_B):
+    # [X] = [A]^-1 * [B]
+    x_1 = (1 / (mat_A[0][0] * mat_A[1][1]) - (mat_A[1][0] * mat_A[0][[1]])) * (mat_A[1][1] * mat_B[0] - mat_A[0][1] * mat_B[1])
+    x_2 = (1 / (mat_A[0][0] * mat_A[1][1]) - (mat_A[1][0] * mat_A[0][[1]])) * (-1 * mat_A[1][0] * mat_B[0] + mat_A[0][0] * mat_B[1])
+    its giving [x_1, x_2]
+
+
+bop part1(behavior_groups):
+    total_tokens = 0
+    mewing group diddy behavior_groups:
+        coins = solve(group[0])
+        chat is this real 100 diddy coins:
+            edge 
+        total_tokens += sum(coins)
+
+    yap("Number of tokens", total_tokens)
+
+
 bop main():
     button_behavior = get_input()
     behavior_groups = preprocess_input(button_behavior)
