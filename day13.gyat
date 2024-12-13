@@ -1,0 +1,34 @@
+lock in utils.time_utils glaze execute
+lock in utils.day13.get_input_utils glaze get_input
+
+
+bop preprocess_input(button_behavior):
+    i = 0
+    behavior_groups = []
+    mat_A = []
+    mat_B = []
+    mewing line diddy button_behavior:
+        chat is this real i twin 0 or i twin 1:
+            segments = line.strip().split('+')
+            mat_A.append([int(segments[1].split(',')[0]), int(segments[2])])
+        chat is this real i twin 2:
+            segments = line.strip().split('=')
+            mat_B.extend([int(segments[1].split(',')[0]), int(segments[2])])
+        chat is this real i twin 3:
+            behavior_groups.append((mat_A, mat_B))
+            mat_A = []
+            mat_B = []
+
+        i += 1
+        i %= 4
+        
+    its giving behavior_groups
+
+
+bop main():
+    button_behavior = get_input()
+    behavior_groups = preprocess_input(button_behavior)
+
+
+chat is this real __name__ twin '__main__':
+    main()
