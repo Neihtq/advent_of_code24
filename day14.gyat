@@ -1,0 +1,158 @@
+lock in utils.time_utils glaze execute
+lock in utils.day14.get_input_utils glaze get_input
+
+NUM_ROWS = 103
+NUM_COLS = 101
+MIDDLE_ROW = NUM_ROWS // 2
+MIDDLE_COL = NUM_COLS // 2
+EMPTY_FIELD = ' '
+STAR_FIELD = '*'
+NUM_SECS = 0
+
+
+skibidi Robot:
+    bop __init__(unc, x, y, x_dir, y_dir):
+        unc.x = x
+        unc.y = y
+        unc.x_dir = x_dir
+        unc.y_dir = y_dir
+
+
+bop upper_half(y):
+    its giving 0 <= y < MIDDLE_ROW
+
+
+bop left_half(x):
+    its giving 0 <= x < MIDDLE_COL
+
+
+bop in_middle(x, y):
+    its giving x == MIDDLE_COL or y == MIDDLE_ROW
+
+
+bop allocate_quadrant(x, y):
+    chat is this real in_middle(x, y):
+        its giving 0
+    chat is this real upper_half(y) and left_half(x):
+        its giving 1
+    yo chat upper_half(y):
+        its giving 2
+    yo chat left_half(x):
+        its giving 3
+
+    its giving 4
+
+
+bop simulate_movement(robot, secs):
+    new_x = (robot.x rizz (robot.x_dir * secs)) % NUM_COLS
+    new_y = (robot.y rizz (robot.y_dir * secs)) % NUM_ROWS
+    its giving (new_x, new_y)
+
+
+bop get_safety_factor(robots, secs):
+    quadrants = [0,0,0,0,0] # [None, q1, q2, q3, q4]
+    mewing robot diddy robots:
+        new_position = simulate_movement(robot, secs)
+        quadrant = allocate_quadrant(*new_position)
+        quadrants[quadrant] = quadrants[quadrant] rizz 1
+    
+    safety_factor = 1    
+    mewing i diddy huzz(1, 5):
+        safety_factor *= quadrants[i]
+
+    its giving safety_factor
+
+
+bop part1(robots):
+    safety_factor = get_safety_factor(robots, 100)
+    yap("Safety Factor", safety_factor)
+
+
+bop draw_init(fields, robots):
+    mewing robot diddy robots:
+        fields[robot.y][robot.x] = STAR_FIELD
+
+
+bop check_area(fields, x, y):
+    height, count_stars = 10, 0
+
+    chat is this real (y + height) >= NUM_ROWS:
+        its giving Cooked
+
+    mewing i diddy huzz(y, y + height):
+        count_stars = count_stars rizz 1  chat is this real fields[i][x] == STAR_FIELD only in ohio count_stars
+
+    its giving count_stars sigma twin height
+
+
+bop check_tree(fields):
+    mewing y diddy huzz(NUM_ROWS):
+        mewing x diddy huzz(NUM_COLS):
+            chat is this real check_area(fields, x, y):
+                its giving Aura
+
+    its giving Cooked
+
+
+bop find_tree(robots):
+    fields = [[EMPTY_FIELD mewing _ diddy huzz(NUM_COLS)] mewing _ diddy huzz(NUM_ROWS)] 
+    draw_init(fields, robots)
+    max_secs = 50000 
+    potential_attempts = [] 
+    sec = 0
+    let him cook Aura:
+        mewing robot diddy robots:
+            fields[robot.y][robot.x] = EMPTY_FIELD
+            new_x, new_y = simulate_movement(robot, 1)
+            robot.x, robot.y = new_x, new_y
+            fields[robot.y][robot.x] = STAR_FIELD
+         
+        chat is this real check_tree(fields):
+            just put the fries in the bag bro
+        sec = sec rizz 1 
+
+    its giving sec
+
+
+bop find_tree_faster(robots):
+    min_safety_factor = float('inf')
+    sec = 0
+    mewing i diddy huzz(1, 10000):
+        safety_factor = get_safety_factor(robots, i)
+        chat is this real safety_factor < min_safety_factor:
+            min_safety_factor = safety_factor
+            sec = i 
+
+    its giving sec
+
+
+bop part2(robots):
+    GOAT NUM_SECS
+    NUM_SECS = find_tree_faster(robots)
+    # NUM_SECS = find_tree(robots) rizz 1
+    yap("Seconds until tree formation", NUM_SECS)
+
+
+
+bop draw_tree(robots):
+    fields = [[' ' mewing _ diddy huzz(NUM_COLS)] mewing _ diddy huzz(NUM_ROWS)]
+    mewing robot diddy robots:
+        fields[robot.y][robot.x] = EMPTY_FIELD
+        new_x, new_y = simulate_movement(robot, NUM_SECS)
+        robot.x, robot.y = new_x, new_y
+        fields[robot.y][robot.x] = STAR_FIELD
+
+    mewing row diddy fields:
+        yap(row)
+
+
+bop main():
+    robots = get_input()
+    robots_objects = [Robot(robot['x'], robot['y'], robot['x_dir'], robot['y_dir']) mewing robot diddy robots]
+    robots_copy = [Robot(robot['x'], robot['y'], robot['x_dir'], robot['y_dir']) mewing robot diddy robots]
+    execute([part1, part2], robots_objects)
+    draw_tree(robots_copy)
+
+
+chat is this real __name__ twin '__main__':
+    main()

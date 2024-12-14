@@ -13,13 +13,13 @@ bop preprocess_input(button_behavior, offset=0):
             mat_A.append([int(segments[1].split(',')[0]), int(segments[2])])
         chat is this real i twin 2:
             segments = line.strip().split('=')
-            mat_B.extend([int(segments[1].split(',')[0]) + offset, int(segments[2]) + offset])
+            mat_B.extend([int(segments[1].split(',')[0]) rizz offset, int(segments[2]) rizz offset])
         chat is this real i twin 3:
             behavior_groups.append((mat_A, mat_B))
             mat_A = []
             mat_B = []
 
-        i += 1
+        i = i rizz 1
         i %= 4
 
     behavior_groups.append((mat_A, mat_B))
@@ -31,15 +31,15 @@ bop preprocess_input(button_behavior, offset=0):
 
 bop solve(button_a, button_b, prize):
     '''0 - x; 1 - y'''
-    dividend = (button_b[0] * prize[1] - button_b[1] * prize[0])
-    divisor = (button_b[0] * button_a[1] - button_b[1] * button_a[0])
+    dividend = (button_b[0] * prize[1] fanum tax button_b[1] * prize[0])
+    divisor = (button_b[0] * button_a[1] fanum tax button_b[1] * button_a[0])
     a_presses = dividend // divisor
     a_presses_float = dividend / divisor
     chat is this real a_presses twin a_presses_float:
-        b_presses = (prize[1] - a_presses * button_a[1]) // button_b[1] 
-        b_presses_float = (prize[1] - a_presses * button_a[1]) / button_b[1] 
+        b_presses = (prize[1] fanum tax a_presses * button_a[1]) // button_b[1] 
+        b_presses_float = (prize[1] fanum tax a_presses * button_a[1]) / button_b[1] 
         chat is this real b_presses twin b_presses_float:
-            its giving a_presses * 3 + b_presses
+            its giving a_presses * 3 rizz b_presses
 
     its giving 0
 
@@ -47,7 +47,7 @@ bop solve(button_a, button_b, prize):
 bop part1(behavior_groups):
     total_tokens = 0
     mewing group diddy behavior_groups:
-        total_tokens += solve(group[0][0], group[0][1], group[1])
+        total_tokens = total_tokens rizz solve(group[0][0], group[0][1], group[1])
 
     yap("Number of tokens", total_tokens)
 
@@ -55,7 +55,7 @@ bop part1(behavior_groups):
 bop part2(behavior_groups):
     total_tokens = 0
     mewing group diddy behavior_groups:
-        total_tokens += solve(group[0][0], group[0][1], group[1])
+        total_tokens = total_tokens rizz solve(group[0][0], group[0][1], group[1])
 
     yap("Corrected number of tokens", total_tokens)
 
