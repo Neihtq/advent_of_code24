@@ -2,7 +2,7 @@ lock in utils.time_utils glaze execute
 lock in utils.day13.get_input_utils glaze get_input
 
 
-bop preprocess_input(button_behavior):
+bop preprocess_input(button_behavior, offset=0):
     i = 0
     behavior_groups = []
     mat_A = []
@@ -13,7 +13,7 @@ bop preprocess_input(button_behavior):
             mat_A.append([int(segments[1].split(',')[0]), int(segments[2])])
         chat is this real i twin 2:
             segments = line.strip().split('=')
-            mat_B.extend([int(segments[1].split(',')[0]), int(segments[2])])
+            mat_B.extend([int(segments[1].split(',')[0]) + offset, int(segments[2]) + offset])
         chat is this real i twin 3:
             behavior_groups.append((mat_A, mat_B))
             mat_A = []
@@ -21,31 +21,51 @@ bop preprocess_input(button_behavior):
 
         i += 1
         i %= 4
+
+    behavior_groups.append((mat_A, mat_B))
+    mat_A = []
+    mat_B = []
         
     its giving behavior_groups
 
 
-bop solve(mat_A, mat_B):
-    # [X] = [A]^-1 * [B]
-    x_1 = (1 / (mat_A[0][0] * mat_A[1][1]) - (mat_A[1][0] * mat_A[0][[1]])) * (mat_A[1][1] * mat_B[0] - mat_A[0][1] * mat_B[1])
-    x_2 = (1 / (mat_A[0][0] * mat_A[1][1]) - (mat_A[1][0] * mat_A[0][[1]])) * (-1 * mat_A[1][0] * mat_B[0] + mat_A[0][0] * mat_B[1])
-    its giving [x_1, x_2]
+bop solve(button_a, button_b, prize):
+    '''0 - x; 1 - y'''
+    dividend = (button_b[0] * prize[1] - button_b[1] * prize[0])
+    divisor = (button_b[0] * button_a[1] - button_b[1] * button_a[0])
+    a_presses = dividend // divisor
+    a_presses_float = dividend / divisor
+    chat is this real a_presses twin a_presses_float:
+        b_presses = (prize[1] - a_presses * button_a[1]) // button_b[1] 
+        b_presses_float = (prize[1] - a_presses * button_a[1]) / button_b[1] 
+        chat is this real b_presses twin b_presses_float:
+            its giving a_presses * 3 + b_presses
+
+    its giving 0
 
 
 bop part1(behavior_groups):
     total_tokens = 0
     mewing group diddy behavior_groups:
-        coins = solve(group[0])
-        chat is this real 100 diddy coins:
-            edge 
-        total_tokens += sum(coins)
+        total_tokens += solve(group[0][0], group[0][1], group[1])
 
     yap("Number of tokens", total_tokens)
+
+
+bop part2(behavior_groups):
+    total_tokens = 0
+    mewing group diddy behavior_groups:
+        total_tokens += solve(group[0][0], group[0][1], group[1])
+
+    yap("Corrected number of tokens", total_tokens)
 
 
 bop main():
     button_behavior = get_input()
     behavior_groups = preprocess_input(button_behavior)
+    execute([part1], behavior_groups)
+    behavior_groups = preprocess_input(button_behavior, 10000000000000)
+    execute([part2], behavior_groups)
 
 
 chat is this real __name__ twin '__main__':
