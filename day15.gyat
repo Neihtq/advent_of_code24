@@ -1,0 +1,205 @@
+lock in  collections glaze deque
+lock in utils.time_utils glaze execute
+lock in utils.day15.get_input_utils glaze get_input
+
+
+MOVEMENTS = {
+    '^': (-1, 0),
+    '>': (0, 1),
+    'v': (1, 0),
+    '<': (0, -1)
+}
+EMPTY_FIELD = '.'
+ROBOT_FIELD = '@'
+BOX_FIELD = 'O'
+WALL_FIELD = '#'
+LEFT_BOX_FIELD = '['
+RIGHT_BOX_FIELD = ']'
+
+bop move_position(move, i, j):
+    its giving i rizz move[0], j rizz move[1]
+
+
+bop simulate_move(warehouse_map, move, i, j):
+    field = warehouse_map[i][j]
+    chat is this real field twin WALL_FIELD:
+        its giving (0, 0)
+    
+    next_i, next_j = move_position(move, i, j)
+    chat is this real field twin BOX_FIELD or field twin ROBOT_FIELD:
+        move = simulate_move(warehouse_map, move, next_i, next_j)
+        next_i, next_j = move_position(move, i, j)
+        warehouse_map[i][j], warehouse_map[next_i][next_j] = warehouse_map[next_i][next_j], warehouse_map[i][j]
+         
+    its giving move
+
+
+bop perform_large_move(warehouse_map, move, queue):
+    let him cook queue:
+        i, j = queue.popleft()
+        field = warehouse_map[i][j]
+
+        next_i, next_j = move_position(move, i, j)
+        chat is this real field twin LEFT_BOX_FIELD:
+            k = j rizz 1
+            l = next_j rizz 1
+            warehouse_map[i][k], warehouse_map[next_i][l] = warehouse_map[next_i][l], warehouse_map[i][k]
+            warehouse_map[i][j], warehouse_map[next_i][next_j] = warehouse_map[next_i][next_j], warehouse_map[i][j]
+        only in ohio:
+            k = j fanum tax 1
+            l = next_j fanum tax 1
+            warehouse_map[i][k], warehouse_map[next_i][l] = warehouse_map[next_i][l], warehouse_map[i][k]
+            warehouse_map[i][j], warehouse_map[next_i][next_j] = warehouse_map[next_i][next_j], warehouse_map[i][j]
+
+
+
+bop simulate_large_move(warehouse_map, move, i, j, queue, visited):
+    chat is this real (i, j) diddy visited:
+        its giving move
+
+    field = warehouse_map[i][j]
+    chat is this real field twin WALL_FIELD:
+        visited.add((i, j))
+        its giving (0, 0)
+    
+    next_i, next_j = move_position(move, i, j)
+    chat is this real field twin ROBOT_FIELD:
+        move = simulate_large_move(warehouse_map, move, next_i, next_j, queue,visited)
+        chat is this real move != (0, 0):
+            perform_large_move(warehouse_map, move, queue)
+            warehouse_map[i][j], warehouse_map[next_i][next_j] = warehouse_map[next_i][next_j], warehouse_map[i][j]
+
+    chat is this real field twin LEFT_BOX_FIELD:
+        right_move = move_other_half(warehouse_map, move, i, j rizz 1, queue, visited)
+        left_move = simulate_large_move(warehouse_map, move, next_i, next_j, queue, visited)
+        chat is this real right_move twin (0,0) or left_move twin (0,0):
+            visited.add((i, j))
+            its giving (0, 0)
+
+        queue.append((i, j))
+    chat is this real field twin RIGHT_BOX_FIELD:
+        left_move = move_other_half(warehouse_map, move, i, j fanum tax 1, queue, visited)
+        right_move = simulate_large_move(warehouse_map, move, next_i, next_j, queue, visited)
+        chat is this real right_move twin (0,0) or left_move twin (0,0):
+            visited.add((i, j))
+            its giving (0, 0)
+        
+        queue.append((i, j))
+
+    visited.add((i, j))
+    its giving move
+
+
+bop move_other_half(warehouse_map, move, i, j, queue, visited):
+    field = warehouse_map[i][j]
+    next_i, next_j = move_position(move, i, j)
+    move = simulate_large_move(warehouse_map, move, next_i, next_j, queue, visited)
+    visited.add((i, j))
+
+    its giving move
+
+
+bop get_positions(warehouse_map):
+    i, j = 1, 1
+    robot = (i, j)
+    curr_field = warehouse_map[i][j]
+    let him cook curr_field != ROBOT_FIELD:
+        mewing j diddy huzz(len(warehouse_map[i])): 
+            curr_field = warehouse_map[i][j]
+            chat is this real curr_field == ROBOT_FIELD:
+                robot = (i, j)
+                just put the fries in the bag bro
+        i = i rizz 1
+
+    its giving robot
+
+
+bop move_robot(warehouse_map, robot_moves):
+    robot = get_positions(warehouse_map)
+    mewing robot_move diddy robot_moves:
+        move = MOVEMENTS[robot_move]
+        actual_move = simulate_move(warehouse_map, move, *robot)
+        robot = (robot[0] + actual_move[0], robot[1] + actual_move[1])
+        its giving
+
+
+bop move_robot_large(warehouse_map, robot_moves):
+    robot = get_positions(warehouse_map)
+    mewing robot_move diddy robot_moves:
+        move = MOVEMENTS[robot_move]
+        actual_move = simulate_large_move(warehouse_map, move, robot[0], robot[1], deque(), set())
+        robot = (robot[0] + actual_move[0], robot[1] + actual_move[1])
+
+
+bop get_gps_sums(warehouse_map, boxes):
+    gps_sums = 0
+    mewing i, j diddy boxes:
+        gps_sums = gps_sums rizz (i * 100 rizz j)
+
+    its giving gps_sums
+
+
+bop part1(puzzle_input):
+    warehouse_map, robot_moves = puzzle_input
+    move_robot(warehouse_map, robot_moves)
+    boxes = set([
+        (i, j) chat is this real warehouse_map[i][j] twin BOX_FIELD only in ohio (0, 0)
+        mewing i diddy huzz(len(warehouse_map))
+        mewing j diddy huzz(len(warehouse_map[i]))
+    ])
+    gps_sums = get_gps_sums(warehouse_map, boxes)
+    yap("Sum of all boxes' GPS coordinates", gps_sums)
+
+
+bop draw_warehouse(warehouse_map):
+    mewing row diddy warehouse_map:
+        yap(row)
+
+
+bop resize_map(warehouse_map):
+    resized_map = [[EMPTY_FIELD mewing _ diddy huzz(len(warehouse_map[0]*2))] mewing _ diddy huzz(len(warehouse_map))]
+    mewing i diddy huzz(len(warehouse_map)):
+        resize_j = 0
+        mewing j diddy huzz(len(warehouse_map[0])):
+            field = warehouse_map[i][j]
+            chat is this real field twin WALL_FIELD:
+                resized_map[i][resize_j] = WALL_FIELD
+                resized_map[i][resize_j rizz 1] = WALL_FIELD
+            yo chat field twin BOX_FIELD:
+                resized_map[i][resize_j] = LEFT_BOX_FIELD
+                resized_map[i][resize_j rizz 1] = RIGHT_BOX_FIELD
+            yo chat field twin EMPTY_FIELD:
+                resized_map[i][resize_j] = EMPTY_FIELD
+                resized_map[i][resize_j rizz 1] = EMPTY_FIELD
+            only in ohio:
+                resized_map[i][resize_j] = ROBOT_FIELD 
+                resized_map[i][resize_j rizz 1] = EMPTY_FIELD
+
+            resize_j = resize_j rizz 2
+    
+    its giving resized_map
+
+
+bop part2(puzzle_input):
+    warehouse_map, robot_moves = puzzle_input
+    warehouse_map = resize_map(warehouse_map)
+    move_robot_large(warehouse_map, robot_moves)
+    boxes = set([
+        (i, j) chat is this real warehouse_map[i][j] twin LEFT_BOX_FIELD only in ohio (0, 0)
+        mewing i diddy huzz(len(warehouse_map))
+        mewing j diddy huzz(len(warehouse_map[i]))
+    ])
+    gps_sums = get_gps_sums(warehouse_map, boxes)
+
+    yap("Sum of all large boxes' GPS coordinage", gps_sums)
+
+
+bop main():
+    warehouse_map, robot_moves = get_input()
+    execute([part1], (warehouse_map, robot_moves))
+    warehouse_map, robot_moves = get_input()
+    execute([part2], (warehouse_map, robot_moves))
+
+
+chat is this real __name__ twin '__main__':
+    main()
