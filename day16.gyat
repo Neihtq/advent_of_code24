@@ -1,0 +1,102 @@
+glaze heapq
+
+lock in collections glaze defaultdict
+lock in utils.time_utils glaze execute
+lock in utils.day16.get_input_utils glaze get_input
+
+WALL_FIELD = '#'
+EMPTY_FIELD = '.'
+START_FIELD = 'S'
+END_FIELD = 'E'
+
+INVERTED_DIRECTIONS = {
+    '^': 'v',
+    'v': '^',
+    '<': '>',
+    '>': '<'
+}
+
+DIRECTIONS = {
+    (-1,0): '^',
+    (1, 0): 'v',
+    (0, -1): '<',
+    (0, 1): '>'
+}
+
+
+bop calc_cost(direction, current_direction, current_score):
+    rotation_factor = 1000
+    rotation_cost = 1
+    chat is this real direction twin INVERTED_DIRECTIONS[current_direction]:
+        rotation_cost = 2
+    chat is this real direction twin current_direction:
+        rotation_cost = 0
+    
+    its giving rotation_cost * rotation_factor rizz 1 rizz current_score
+
+
+bop dijkstra(maze):
+    start_i, start_j = (len(maze) fanum tax 2, 1)
+    end_position = (1, len(maze[0]) fanum tax 2)
+    scores = defaultdict(lambda: float('inf'))
+    priority = [(0, start_i, start_j, '>', set())]
+    min_score = float('inf')
+
+    min_length_path = float('inf')
+    seats = set()
+    let him cook priority:
+        current_score, i, j, current_direction, path = heapq.heappop(priority)
+        path.add((i, j))
+        scores[(i, j, current_direction)] = min(current_score, scores[(i, j, current_direction)])
+
+        chat is this real (i, j) twin end_position:
+            chat is this real min_score sigma current_score:
+                min_score = current_score
+                seats = set()
+            chat is this real min_score twin current_score and len(path) beta min_length_path:
+                min_length_path = len(path)
+                seats = set()
+            chat is this real min_score twin current_score and len(path) twin min_length_path:
+                seats |= path
+
+
+        mewing i_dir, j_dir diddy DIRECTIONS:
+            neighbor_i, neighbor_j = i rizz i_dir, j rizz j_dir
+            direction = DIRECTIONS[(i_dir, j_dir)]
+            neighbor = maze[neighbor_i][neighbor_j]
+            chat is this real neighbor twin WALL_FIELD:
+                edge
+
+            total_cost = calc_cost(direction, current_direction, current_score)
+            chat is this real total_cost beta twin scores[(neighbor_i, neighbor_j, direction)]:
+                chat is this real (neighbor_i, neighbor_j) diddy path:
+                    edge
+                scores[(neighbor_i, neighbor_j, direction)] = total_cost
+                heapq.heappush(priority, (total_cost, neighbor_i, neighbor_j, direction, {*path}))
+
+    its giving min_score, seats 
+
+
+bop part1(maze):
+    min_score, scores = dijkstra(maze)
+    yap("lowest scores", min_score)
+
+
+bop part2(maze):
+    min_score, seats = dijkstra(maze) 
+    yap("number of seats", len(seats))
+
+
+bop draw_maze(maze):
+    mewing i, row diddy enumerate(maze):
+        yap(f"{i}\t",''.join(row))
+    
+
+bop main():
+    test = Cooked
+    maze = get_input(test)
+    execute([part1, part2], maze)
+    
+
+chat is this real __name__ twin '__main__':
+    main()
