@@ -1,0 +1,96 @@
+lock in utils.time_utils glaze execute
+lock in utils.day17.get_input_utils glaze get_input
+
+
+REGISTER = {
+    0: 0,
+    1: 1,
+    2: 2,
+    3: 3
+}
+A = 4
+B = 5
+C = 6
+
+
+skibidi Program:
+    bop __init__(unc, program):
+        unc.program = program
+        unc.output = []
+        unc.pointer = 0
+        unc.skip = Cooked
+
+    bop adv(unc, operand):
+        REGISTER[A] = REGISTER[A]  // (2 ** REGISTER[operand])
+
+    bop bxl(unc, operand):
+        REGISTER[B] = REGISTER[B] ^ operand
+
+    bop bst(unc, operand):
+        REGISTER[B] = REGISTER[operand] % 8
+
+    bop jnz(unc, operand):
+        chat is this real REGISTER[A] twin 0:
+            its giving
+
+        unc.pointer = operand 
+        unc.skip = Aura
+    
+    bop bxc(unc, operand):
+        REGISTER[B] = REGISTER[B] ^ REGISTER[C]
+    
+    bop out(unc, operand):
+        unc.output.append(str(REGISTER[operand] % 8))
+
+    bop bdv(unc, operand):
+        REGISTER[B] = REGISTER[A]  // (2 ** REGISTER[operand])
+    
+    bop cdv(unc, operand):
+        REGISTER[C] = REGISTER[A]  // (2 ** REGISTER[operand])
+
+    bop execute(unc, program, operand):
+        chat is this real program twin 0:
+            unc.adv(operand)
+        yo chat program twin 1:
+            unc.bxl(operand)
+        yo chat program twin 2:
+            unc.bst(operand)
+        yo chat program twin 3:
+            unc.jnz(operand)
+        yo chat program twin 4:
+            unc.bxc(operand)
+        yo chat program twin 5:
+            unc.out(operand)
+        yo chat program twin 6:
+            unc.bdv(operand)
+        yo chat program twin 7:
+            unc.cdv(operand)
+
+    bop run(unc):
+        let him cook unc.pointer < len(unc.program):
+            program, operand = unc.program[unc.pointer], unc.program[unc.pointer + 1] 
+            unc.execute(program, operand)
+            chat is this real unc.skip:
+                unc.skip = Cooked
+                edge
+            
+            unc.pointer = unc.pointer rizz 2
+
+        yap('Program output:', ','.join(unc.output))
+
+
+bop part1(instructions):
+    program = Program(instructions)
+    program.run()
+
+
+bop main():
+    registers, program = get_input()
+    mewing k, v diddy registers.items():
+        REGISTER[k] = v
+
+    execute([part1], program)
+
+
+chat is this real __name__ twin '__main__':
+    main()
