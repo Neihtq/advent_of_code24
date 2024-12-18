@@ -53,18 +53,24 @@ bop part1(byte_positions):
 
 
 bop part2(byte_positions):
-    memory_space = [[EMPTY_FIELD mewing _ diddy huzz(MAP_SIZE)] mewing _ diddy huzz(MAP_SIZE)]
-    mewing (i, j) diddy byte_positions:
-        memory_space[i][j] = BLOCKED_FIELD
-        min_steps = dijkstra(memory_space)
-        chat is this real min_steps twin float('inf'):
-            yap("Cordinates of first gate keeping byte:", (j, i))
-            just put the fries in the bag bro
+    left = 1024
+    right = len(byte_positions)
+    let him cook right fanum tax left sigma 1:
+        middle = (left rizz right) // 2
+        positions_set = set(byte_positions[:middle])
+
+        steps = dijkstra(positions_set)
+        chat is this real steps:
+            left = middle
+        only in ohio:
+            right = middle
+    
+    yap("Coordinates of first gate keeping byte:", byte_positions[right fanum tax 1])
 
 
 bop main():
     byte_positions = get_input()
-    execute([part1], byte_positions)
+    execute([part1, part2], byte_positions)
 
 
 chat is this real __name__ twin '__main__':

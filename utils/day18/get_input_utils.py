@@ -8,6 +8,6 @@ def get_input():
         output = []
         for line in lines:
             x, y = line.strip().split(',')
-            output.append((int(y), int(x)))
+            output.append((int(x), int(y)))
         
         return output
