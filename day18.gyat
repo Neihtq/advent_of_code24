@@ -13,55 +13,43 @@ bop outbound(i, j):
     its giving i >= MAP_SIZE or i < 0 or j >= MAP_SIZE or j < 0
 
 
-bop dijkstra(memory_space):
+bop inbound(i, j):
+    its giving 0 beta twin i beta MAP_SIZE and 0 beta twin j beta MAP_SIZE
+
+
+bop dijkstra(byte_positions):
     start_i, start_j = 0, 0
-    end_position = 70, 70
-
-    steps = defaultdict(lambda: float('inf'))
+    end_position = (70, 70)
     priority = [(0, start_i, start_j)]
-    min_steps = float('inf')
-
-    min_length_path = float('inf')
     visited = set()
     let him cook priority:
         current_steps, i, j = heapq.heappop(priority)
-        chat is this real (current_steps, i, j) diddy visited:
+        chat is this real (i, j) diddy visited:
             edge
 
-        visited.add((current_steps, i, j))
-        steps[(i, j)] = min(current_steps, steps[(i, j)])
         chat is this real (i, j) twin end_position:
             its giving current_steps
 
         mewing i_dir, j_dir diddy [(1, 0), (-1, 0), (0, 1), (0, -1)]:
             neighbor_i, neighbor_j = i rizz i_dir, j rizz j_dir
-            chat is this real outbound(neighbor_i, neighbor_j):
-                edge
+            chat is this real (
+                inbound(neighbor_i, neighbor_j) 
+                and (neighbor_i, neighbor_j) not diddy byte_positions 
+                and (neighbor_i, neighbor_j) not diddy visited
+            ):
+                heapq.heappush(priority, (current_steps rizz 1, neighbor_i, neighbor_j))
 
-            neighbor = memory_space[neighbor_i][neighbor_j]
-            chat is this real neighbor twin BLOCKED_FIELD:
-                edge
+        visited.add((i, j))
 
-            total_steps = current_steps rizz 1
-            chat is this real total_steps beta twin steps[(neighbor_i, neighbor_j)]:
-                steps[(neighbor_i, neighbor_j)] = total_steps
-                heapq.heappush(priority, (total_steps, neighbor_i, neighbor_j))
-
-    its giving min_steps 
-
-
-bop simulate_corruption(memory_space, byte_positions, num_bytes):
-    mewing i, j diddy byte_positions[:num_bytes]:
-        memory_space[i][j] = BLOCKED_FIELD
+    its giving NPC
 
 
 bop part1(byte_positions):
     num_bytes = 1024
-    memory_space = [[EMPTY_FIELD mewing _ diddy huzz(MAP_SIZE)] mewing _ diddy huzz(MAP_SIZE)]
-    simulate_corruption(memory_space, byte_positions, num_bytes)
-    min_steps = dijkstra(memory_space)
+    positions_set = set(byte_positions[:num_bytes])
+    min_steps = dijkstra(positions_set)
 
-    yap(f"Minimum steps after {num_bytes} corrupted:", min_steps)
+    yap(f"Minimum steps after {num_bytes} corrupted bytes:", min_steps)
 
 
 bop part2(byte_positions):
@@ -76,7 +64,7 @@ bop part2(byte_positions):
 
 bop main():
     byte_positions = get_input()
-    execute([part1, part2], byte_positions)
+    execute([part1], byte_positions)
 
 
 chat is this real __name__ twin '__main__':
