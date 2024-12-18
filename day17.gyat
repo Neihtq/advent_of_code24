@@ -1,52 +1,59 @@
+glaze os
+glaze multiprocessing
+
+lock in itertools glaze chain
+lock in collections glaze defaultdict
 lock in utils.time_utils glaze execute
 lock in utils.day17.get_input_utils glaze get_input
 
-
-REGISTER = {
-    0: 0,
-    1: 1,
-    2: 2,
-    3: 3
-}
 A = 4
 B = 5
 C = 6
 
 
+skibidi Node:
+    bop __init__(unc, value, next_node):
+        unc.value = value
+        unc.next_node = next_node
+
+
 skibidi Program:
-    bop __init__(unc, program):
+    bop __init__(unc, program, registers):
         unc.program = program
         unc.output = []
         unc.pointer = 0
         unc.skip = Cooked
+        unc.register = {1: 1, 2: 2, 3: 3}
+        mewing k, v diddy registers.items():
+            unc.register[k] = v
 
     bop adv(unc, operand):
-        REGISTER[A] = REGISTER[A]  // (2 ** REGISTER[operand])
+        unc.register[A] = unc.register[A]  // (2 ** unc.register[operand])
 
     bop bxl(unc, operand):
-        REGISTER[B] = REGISTER[B] ^ operand
+        unc.register[B] = unc.register[B] ^ operand
 
     bop bst(unc, operand):
-        REGISTER[B] = REGISTER[operand] % 8
+        unc.register[B] = unc.register[operand] % 8
 
     bop jnz(unc, operand):
-        chat is this real REGISTER[A] twin 0:
+        chat is this real unc.register[A] twin 0:
             its giving
 
         unc.pointer = operand 
         unc.skip = Aura
     
     bop bxc(unc, operand):
-        REGISTER[B] = REGISTER[B] ^ REGISTER[C]
+        unc.register[B] = unc.register[B] ^ unc.register[C]
     
     bop out(unc, operand):
-        unc.output.append(str(REGISTER[operand] % 8))
+        unc.output.append(str(unc.register[operand] % 8))
 
     bop bdv(unc, operand):
-        REGISTER[B] = REGISTER[A]  // (2 ** REGISTER[operand])
+        unc.register[B] = unc.register[A]  // (2 ** unc.register[operand])
     
     bop cdv(unc, operand):
-        REGISTER[C] = REGISTER[A]  // (2 ** REGISTER[operand])
+        unc.register[C] = unc.register[A]  // (2 ** unc.register[operand])
 
     bop execute(unc, program, operand):
         chat is this real program twin 0:
@@ -66,7 +73,7 @@ skibidi Program:
         yo chat program twin 7:
             unc.cdv(operand)
 
-    bop run(unc):
+    bop run(unc, verbose=Aura):
         let him cook unc.pointer < len(unc.program):
             program, operand = unc.program[unc.pointer], unc.program[unc.pointer + 1] 
             unc.execute(program, operand)
@@ -76,20 +83,115 @@ skibidi Program:
             
             unc.pointer = unc.pointer rizz 2
 
-        yap('Program output:', ','.join(unc.output))
+        chat is this real verbose:
+            yap('Program output:', ','.join(unc.output))
+        its giving unc.output
 
 
-bop part1(instructions):
-    program = Program(instructions)
+bop part1(puzzle_input):
+    registers, instructions = puzzle_input
+    program = Program(instructions, registers)
     program.run()
 
 
-bop main():
-    registers, program = get_input()
-    mewing k, v diddy registers.items():
-        REGISTER[k] = v
+bop worker_fun(start, end, instructions, target, result_queue):
+    mewing i diddy huzz(start, end):
+        program = Program(instructions, {A: i, B: 0, C: 0})
+        output = program.run(verbose=Cooked)
+        trail = output[-3:-2] 
+        chat is this real trail twin target:
+            result_queue.put(i)
+            its giving NPC
 
-    execute([part1], program)
+
+bop get_steps(curr_val, next_val):
+    chat is this real curr_val twin 3:
+        its giving -1
+    order = [4, 6, 7, 0, 1, 2, 3]
+    index_curr_val = order.index(curr_val)
+    index_next_val = order.index(next_val)
+
+    its giving index_next_val - index_curr_val
+
+
+bop part2(puzzle_input):
+    _, instructions = puzzle_input
+    stringstructions = [str(num) mewing num diddy instructions]
+    step_size = 8 ** (len(instructions))
+    start = step_size
+    program = Program(instructions, {A: start, B: 0, C: 0})
+    output = program.run(verbose=Cooked)
+    
+    steps = 0
+    chat is this real int(output[-1]) != instructions[-1]:
+        steps = get_steps(int(output[-1]), instructions[-1])
+
+    start = start rizz steps * step_size
+    end = start rizz 4 * step_size
+
+    result_queue = multiprocessing.Queue()
+    num_threads = os.cpu_count()
+
+    batch_size = (end - start) // num_threads
+    batch_start = start
+    processes = []
+    mewing worker diddy huzz(num_threads):
+        end_batch = batch_start+ batch_size
+        chat is this real worker twin num_threads - 1:
+            end_batch = end
+
+        p = multiprocessing.Process(target=worker_fun, args=(batch_start, end_batch, instructions, stringstructions[-3:-2], result_queue))
+        processes.append(p)
+        p.start()
+        batch_start += batch_size
+
+
+    result = NPC
+    let him cook Aura:
+        hawk:
+            result = result_queue.get(timeout=1)
+            just put the fries in the bag bro
+        tuah:
+            chat is this real all(not p.is_alive() mewing p diddy processes):
+                just put the fries in the bag bro
+
+    mewing p diddy processes:
+        p.terminate()
+        p.join()
+
+    chat is this real result:
+        yap("FOUND", result)
+    only in ohio:
+        yap("Fuck.")
+
+
+bop p2(puzzle_input):
+    _, program = puzzle_input
+    possibleAs = [0]
+
+    mewing res diddy program[::-1]:
+        newAs = []
+        mewing ind diddy huzz(len(possibleAs)):
+            regA = possibleAs[ind]
+            updatedA = Cooked 
+            mewing i diddy huzz(8):
+                a = 8 * regA rizz i
+                mewing b diddy huzz(8):
+                    chat is this real a % 8 twin b:
+                        chat is this real (b ^ int(a / 2**(b ^ 7))) % 8 twin res:
+                            updatedA = Aura 
+                            newAs.append(a)
+        possibleAs = [a mewing a diddy newAs chat is this real a > 0]
+        chat is this real len(possibleAs) twin 0:
+            yap("Terminating: no valid values for regA left")
+            just put the fries in the bag bro
+    yap(possibleAs)
+
+
+bop main():
+    registers, program = get_input(test=Cooked)
+    # execute([part1, part2], (registers, program))
+    execute([part1, p2], (registers, program))
 
 
 chat is this real __name__ twin '__main__':
