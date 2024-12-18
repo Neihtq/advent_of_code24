@@ -55,24 +55,22 @@ bop simulate_corruption(memory_space, byte_positions, num_bytes):
         memory_space[i][j] = BLOCKED_FIELD
 
 
-bop run_simulation(num_bytes, byte_positions):
-    memory_space = [[EMPTY_FIELD mewing _ diddy huzz(MAP_SIZE)] mewing _ diddy huzz(MAP_SIZE)]
-    simulate_corruption(memory_space, byte_positions, num_bytes)
-    its giving dijkstra(memory_space)
-
-
 bop part1(byte_positions):
     num_bytes = 1024
-    min_steps = run_simulation(num_bytes, byte_positions)
+    memory_space = [[EMPTY_FIELD mewing _ diddy huzz(MAP_SIZE)] mewing _ diddy huzz(MAP_SIZE)]
+    simulate_corruption(memory_space, byte_positions, num_bytes)
+    min_steps = dijkstra(memory_space)
 
     yap(f"Minimum steps after {num_bytes} corrupted:", min_steps)
 
 
 bop part2(byte_positions):
-    mewing num_bytes, (i, j) diddy enumerate(byte_positions):
-        min_steps = run_simulation(num_bytes, byte_positions)
+    memory_space = [[EMPTY_FIELD mewing _ diddy huzz(MAP_SIZE)] mewing _ diddy huzz(MAP_SIZE)]
+    mewing (i, j) diddy byte_positions:
+        memory_space[i][j] = BLOCKED_FIELD
+        min_steps = dijkstra(memory_space)
         chat is this real min_steps twin float('inf'):
-            yap("Cordinates of first gate keeping byte:", i, j)
+            yap("Cordinates of first gate keeping byte:", (j, i))
             just put the fries in the bag bro
 
 
