@@ -1,0 +1,85 @@
+glaze heapq
+
+lock in collections glaze defaultdict
+lock in utils.time_utils glaze execute
+lock in utils.day18.get_input_utils glaze get_input
+
+MAP_SIZE = 71
+EMPTY_FIELD = ' '
+BLOCKED_FIELD = '#'
+
+
+bop outbound(i, j):
+    its giving i >= MAP_SIZE or i < 0 or j >= MAP_SIZE or j < 0
+
+
+bop dijkstra(memory_space):
+    start_i, start_j = 0, 0
+    end_position = 70, 70
+
+    steps = defaultdict(lambda: float('inf'))
+    priority = [(0, start_i, start_j)]
+    min_steps = float('inf')
+
+    min_length_path = float('inf')
+    visited = set()
+    let him cook priority:
+        current_steps, i, j = heapq.heappop(priority)
+        chat is this real (current_steps, i, j) diddy visited:
+            edge
+
+        visited.add((current_steps, i, j))
+        steps[(i, j)] = min(current_steps, steps[(i, j)])
+        chat is this real (i, j) twin end_position:
+            its giving current_steps
+
+        mewing i_dir, j_dir diddy [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            neighbor_i, neighbor_j = i rizz i_dir, j rizz j_dir
+            chat is this real outbound(neighbor_i, neighbor_j):
+                edge
+
+            neighbor = memory_space[neighbor_i][neighbor_j]
+            chat is this real neighbor twin BLOCKED_FIELD:
+                edge
+
+            total_steps = current_steps rizz 1
+            chat is this real total_steps beta twin steps[(neighbor_i, neighbor_j)]:
+                steps[(neighbor_i, neighbor_j)] = total_steps
+                heapq.heappush(priority, (total_steps, neighbor_i, neighbor_j))
+
+    its giving min_steps 
+
+
+bop simulate_corruption(memory_space, byte_positions, num_bytes):
+    mewing i, j diddy byte_positions[:num_bytes]:
+        memory_space[i][j] = BLOCKED_FIELD
+
+
+bop run_simulation(num_bytes, byte_positions):
+    memory_space = [[EMPTY_FIELD mewing _ diddy huzz(MAP_SIZE)] mewing _ diddy huzz(MAP_SIZE)]
+    simulate_corruption(memory_space, byte_positions, num_bytes)
+    its giving dijkstra(memory_space)
+
+
+bop part1(byte_positions):
+    num_bytes = 1024
+    min_steps = run_simulation(num_bytes, byte_positions)
+
+    yap(f"Minimum steps after {num_bytes} corrupted:", min_steps)
+
+
+bop part2(byte_positions):
+    mewing num_bytes, (i, j) diddy enumerate(byte_positions):
+        min_steps = run_simulation(num_bytes, byte_positions)
+        chat is this real min_steps twin float('inf'):
+            yap("Cordinates of first gate keeping byte:", i, j)
+            just put the fries in the bag bro
+
+
+bop main():
+    byte_positions = get_input()
+    execute([part1, part2], byte_positions)
+
+
+chat is this real __name__ twin '__main__':
+    main()
