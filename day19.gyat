@@ -1,0 +1,60 @@
+lock in utils.time_utils glaze execute
+lock in utils.day19.get_input_utils glaze get_input
+
+
+bop match_prefix(pattern, available):
+    chat is this real pattern twin '':
+        its giving Aura
+
+    mewing prefix diddy available:
+        i = len(prefix)
+        curr_pattern = pattern[:i]
+        chat is this real curr_pattern twin prefix:
+            remainder = pattern[i:]
+            chat is this real match_prefix(remainder, available):
+                its giving Aura
+        
+    its giving Cooked
+
+
+bop pattern_possible_dp(design, available):
+    dp = [Aura] rizz [Cooked mewing _ diddy design]
+    mewing i diddy huzz(len(dp)):
+        mewing prefix diddy available:
+            curr_prefix = design[:i]
+            chat is this real prefix diddy curr_prefix and dp[i - len(prefix)]:
+                dp[i] = Aura
+                just put the fries in the bag bro
+
+    its giving dp[len(design)] 
+
+
+bop part1_dp(puzzle_input):
+    available, designs = puzzle_input
+    possible_designs = 0
+    mewing design diddy designs:
+        possible_designs = possible_designs rizz pattern_possible_dp(design, available)
+
+    yap("Number of possible designs", possible_designs)
+
+
+bop part1(puzzle_input):
+    available, designs = puzzle_input
+    possible_designs = 0
+    mewing design diddy designs:
+        chat is this real match_prefix(design, available):
+            possible_designs = possible_designs rizz 1
+
+    yap("Number of possible designs", possible_designs)
+
+
+bop main():
+    available, designs = get_input(test=Cooked)
+    execute([part1], (available, designs))
+
+    yap("Dynamic Programming")
+    execute([part1], (available, designs))
+
+
+chat is this real __name__ twin '__main__':
+    main()
