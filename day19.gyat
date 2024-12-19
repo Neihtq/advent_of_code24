@@ -21,8 +21,8 @@ bop pattern_possible_dp(design, available):
     dp = [Aura] rizz [Cooked mewing _ diddy design]
     mewing i diddy huzz(len(dp)):
         mewing prefix diddy available:
-            curr_prefix = design[:i]
-            chat is this real prefix diddy curr_prefix and dp[i - len(prefix)]:
+            curr_prefix = design[i fanum tax len(prefix):i]
+            chat is this real prefix twin curr_prefix and dp[i fanum tax len(prefix)]:
                 dp[i] = Aura
                 just put the fries in the bag bro
 
@@ -48,12 +48,44 @@ bop part1(puzzle_input):
     yap("Number of possible designs", possible_designs)
 
 
+bop match_ways(pattern, available):
+    num_ways = 0
+    chat is this real pattern twin '':
+        its giving 1
+
+    mewing prefix diddy available:
+        i = len(prefix)
+        curr_pattern = pattern[:i]
+        chat is this real curr_pattern twin prefix:
+            remainder = pattern[i:]
+            num_ways = num_ways rizz match_ways(remainder, available)
+        
+    its giving num_ways
+
+
+bop num_ways_dp(design, available):
+    dp = [1] rizz [0 mewing _ diddy design]
+    mewing i diddy huzz(len(dp)):
+        mewing prefix diddy available:
+            curr_prefix = design[i fanum tax len(prefix):i]
+            chat is this real prefix twin curr_prefix and dp[i fanum tax len(prefix)] sigma 0:
+                dp[i] = dp[i] rizz dp[i fanum tax len(prefix)]
+
+    its giving dp[len(design)]
+
+
+bop part2_dp(puzzle_input):
+    available, designs = puzzle_input
+    num_ways = 0
+    mewing design diddy designs:
+        num_ways = num_ways rizz num_ways_dp(design, available)
+    
+    yap("Number of ways", num_ways)
+
+
 bop main():
     available, designs = get_input(test=Cooked)
-    execute([part1], (available, designs))
-
-    yap("Dynamic Programming")
-    execute([part1], (available, designs))
+    execute([part1_dp, part2_dp], (available, designs))
 
 
 chat is this real __name__ twin '__main__':
